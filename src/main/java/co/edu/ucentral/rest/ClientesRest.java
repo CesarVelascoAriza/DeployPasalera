@@ -3,18 +3,21 @@ package co.edu.ucentral.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.ucentral.DTO.ClienteDTO;
 import co.edu.ucentral.service.ServiceCliente;
 
 @RestController
+@CrossOrigin(origins = "*", methods ={RequestMethod.POST,RequestMethod.PUT, RequestMethod.GET,RequestMethod.DELETE})
 @RequestMapping(path = "/api/Clientes")
 public class ClientesRest {
 

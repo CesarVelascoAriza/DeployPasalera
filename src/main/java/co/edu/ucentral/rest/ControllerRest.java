@@ -21,7 +21,7 @@ import co.edu.ucentral.service.ServiceBanco;
 
 @RestController
 @RequestMapping(path = "/api/bancos")
-@CrossOrigin (origins = "http://localhost:4200")
+
 public class ControllerRest {
 
 	@Autowired

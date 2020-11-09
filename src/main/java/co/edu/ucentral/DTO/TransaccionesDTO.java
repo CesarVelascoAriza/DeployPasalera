@@ -6,7 +6,8 @@ public class TransaccionesDTO {
 	private EstadoDTO estado;
 	private ClienteDTO cliente;
 	private String numeroCuentaDestino;
-	private String numeroCuentaorigen	;
+	private String numeroCuentaorigen;
+	private String urlRetorno;
 	private int banco;
 	private double monto;
 	private String descripcionPago;
@@ -102,5 +103,22 @@ public class TransaccionesDTO {
 	public void setValidar(String validar) {
 		this.validar = validar;
 	}
+
+	public String getNumeroCuentaorigen() {
+		return numeroCuentaorigen;
+	}
+
+	public void setNumeroCuentaorigen(String numeroCuentaorigen) {
+		this.numeroCuentaorigen = numeroCuentaorigen;
+	}
+
+	public String getUrlRetorno() {
+		return urlRetorno;
+	}
+
+	public void setUrlRetorno(String urlRetorno) {
+		this.urlRetorno = urlRetorno;
+	}
+	
 
 }
