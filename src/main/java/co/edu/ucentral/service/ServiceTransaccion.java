@@ -72,21 +72,18 @@ public class ServiceTransaccion {
 			cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
 			comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
 		} catch (Exception e) {
-			if (clienteRepo.existsById(cliente.getId())) {
+			
 				clienteRepo.save(new Cliente(0, tipo, trans.getCliente().getDocumento(), trans.getCliente().getNombre(),
 						trans.getCliente().getEmail()));
-			}
-			else {
-			comercioRepo.save(
-					new Comercio(0, trans.getComercio().getNit(), trans.getComercio().getNombreComercio(), "", ""));
-			} 
 		}
 		if(cliente!= null)
 			cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
-		if(comercio != null)
+		if(comercio != null) {
 			comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
-		else
+		}
+		else {
 			comercioRepo.save(new Comercio(0, trans.getComercio().getNit(), trans.getComercio().getNombreComercio(), "", ""));
+		}
 		comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
 		Transaccion transacciones = new Transaccion("", trans.getNumeroCuentaDestino(), trans.getDescripcionPago(),
 				trans.getMonto(), trans.getBanco(), cliente, comercio, estado);
