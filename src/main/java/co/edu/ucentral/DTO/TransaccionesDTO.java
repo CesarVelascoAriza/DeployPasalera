@@ -18,13 +18,14 @@ public class TransaccionesDTO {
 
 	}
 
-	public TransaccionesDTO(int cus, EstadoDTO estado, ClienteDTO cliente, String numeroCuentaDestino, int banco,
+	public TransaccionesDTO(int cus, EstadoDTO estado, ClienteDTO cliente, String numeroCuentaDestino,String numeroCuentaorigen, int banco,
 			double monto, String descripcionPago, ComercioDTO comercio, String validar) {
 		super();
 		this.cus = cus;
 		this.estado = estado;
 		this.cliente = cliente;
 		this.numeroCuentaDestino = numeroCuentaDestino;
+		this.numeroCuentaorigen =numeroCuentaorigen;
 		this.banco = banco;
 		this.monto = monto;
 		this.descripcionPago = descripcionPago;

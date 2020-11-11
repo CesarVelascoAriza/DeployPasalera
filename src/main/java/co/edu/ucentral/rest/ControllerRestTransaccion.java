@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.ucentral.DTO.Mensaje;
 import co.edu.ucentral.DTO.TransaccionesDTO;
 import co.edu.ucentral.service.ServiceTransaccion;
 
@@ -32,7 +33,8 @@ public class ControllerRestTransaccion {
 
     @Autowired
     private ServiceTransaccion serviceTransaccion;
-   
+    @Autowired
+    private Mensaje mensaje; 
     
     @GetMapping
     public List<TransaccionesDTO> getServiTransaccion() {
@@ -45,8 +47,13 @@ public class ControllerRestTransaccion {
     }
 
     @PostMapping()
-    public void agregarTransaccion(@RequestBody() TransaccionesDTO trans) {
-    	serviceTransaccion.crearTransaccion(trans);
+    public TransaccionesDTO agregarTransaccion(@RequestBody() TransaccionesDTO trans) {
+    	
+    	//mensaje.setStatus("200");
+    	//mensaje.setEntidad(serviceTransaccion.crearTransaccion(trans));
+    	//mensaje.setMensaje("se actualizo");
+    	return  serviceTransaccion.crearTransaccion(trans);
+    			
     }
     @PutMapping("/{id}")
     public TransaccionesDTO actualizarTransaccion(@RequestBody() TransaccionesDTO t, @RequestParam(value = "id") int id) {

@@ -47,7 +47,6 @@ public class ServiceTransaccion {
 	private IEstadoRespository estadoRepo;
 	@Autowired
 	private IComercioRepository comercioRepo;
-	
 
 	public List<TransaccionesDTO> getAllTransacciones() {
 		List<TransaccionesDTO> transaccion = new ArrayList<TransaccionesDTO>();
@@ -57,7 +56,7 @@ public class ServiceTransaccion {
 					tran.getCliente().getDocumento(), tran.getCliente().getNombre(), tran.getCliente().getEmail(), "");
 			ComercioDTO comercio = new ComercioDTO(tran.getComercios().getDocumento(), tran.getComercios().getNombre());
 
-			transaccion.add(new TransaccionesDTO(tran.getId(), estado, cliente, tran.getNumeroCuentaDestino(),
+			transaccion.add(new TransaccionesDTO(tran.getId(), estado, cliente, tran.getNumeroCuentaDestino(), tran.getNumeroCuentaOrigen(),
 					tran.getBanco(), tran.getValorPago(), tran.getDescipcionPago(), comercio, ""));
 		});
 
@@ -67,13 +66,34 @@ public class ServiceTransaccion {
 	public TransaccionesDTO crearTransaccion(TransaccionesDTO trans) {
 		Estado estado = estadoRepo.findByDescripcion(trans.getEstado().getEstado());
 		TipoDocumento tipo = tipoDocumentoRep.findByDescripcion(trans.getCliente().getTipoDocument());
-		Cliente cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
-		Comercio comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
+		Cliente cliente = null;
+		Comercio comercio = null;
+		try {
+			cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
+			comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
+		} catch (Exception e) {
+			if (clienteRepo.existsById(cliente.getId())) {
+				clienteRepo.save(new Cliente(0, tipo, trans.getCliente().getDocumento(), trans.getCliente().getNombre(),
+						trans.getCliente().getEmail()));
+			}
+			else {
+			comercioRepo.save(
+					new Comercio(0, trans.getComercio().getNit(), trans.getComercio().getNombreComercio(), "", ""));
+			} 
+		}
+		if(cliente!= null)
+			cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
+		if(comercio != null)
+			comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
+		else
+			comercioRepo.save(new Comercio(0, trans.getComercio().getNit(), trans.getComercio().getNombreComercio(), "", ""));
+		comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
 		Transaccion transacciones = new Transaccion("", trans.getNumeroCuentaDestino(), trans.getDescripcionPago(),
 				trans.getMonto(), trans.getBanco(), cliente, comercio, estado);
 		if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
 			transacciones = transaccionRepo.save(transacciones);
 		}
+		trans.setUrlRetorno("https://vistapasarela/transaccion/"+transacciones.getId());
 		trans.setCus(transacciones.getId());
 		return trans;
 	}
@@ -99,13 +119,14 @@ public class ServiceTransaccion {
 		Optional<Transaccion> transaccion = transaccionRepo.findById(id);
 		EstadoDTO estado = new EstadoDTO(transaccion.get().getEstado().getDescripcion());
 		ClienteDTO cliente = new ClienteDTO(transaccion.get().getCliente().getTipodocumeto().getDescripcion(),
-				transaccion.get().getCliente().getDocumento(), transaccion.get().getCliente().getNombre(), transaccion.get().getCliente().getEmail(), "");
-		ComercioDTO comercio = new ComercioDTO(transaccion.get().getComercios().getDocumento(), transaccion.get().getComercios().getNombre());
+				transaccion.get().getCliente().getDocumento(), transaccion.get().getCliente().getNombre(),
+				transaccion.get().getCliente().getEmail(), "");
+		ComercioDTO comercio = new ComercioDTO(transaccion.get().getComercios().getDocumento(),
+				transaccion.get().getComercios().getNombre());
 
-		return new TransaccionesDTO(
-				transaccion.get().getId(), estado, cliente, transaccion.get().getNumeroCuentaDestino(),
-				transaccion.get().getBanco(), transaccion.get().getValorPago(), transaccion.get().getDescipcionPago(), comercio, ""
-				);
+		return new TransaccionesDTO(transaccion.get().getId(), estado, cliente,
+				transaccion.get().getNumeroCuentaDestino(),transaccion.get().getNumeroCuentaOrigen(), transaccion.get().getBanco(),
+				transaccion.get().getValorPago(), transaccion.get().getDescipcionPago(), comercio, "");
 	}
 
 }

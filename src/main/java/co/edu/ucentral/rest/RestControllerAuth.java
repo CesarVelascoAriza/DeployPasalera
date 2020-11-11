@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.ucentral.DTO.Mensaje;
 import co.edu.ucentral.DTO.UsuarioDTO;
 import co.edu.ucentral.jwt.JwtUtil;
 import co.edu.ucentral.service.UsuarioService;
@@ -29,23 +30,31 @@ public class RestControllerAuth {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private JwtUtil jwtTokenUtil;
-
+	@Autowired
+	private Mensaje mensajerespuesta;
+	
 	@PostMapping
-	public UsuarioDTO createAuthenticationToken(@RequestBody UsuarioDTO usuario) throws Exception {
+	public Mensaje createAuthenticationToken(@RequestBody UsuarioDTO usuario) throws Exception {
 		try {
 			try {
 				authenticationManager.authenticate(
 						new UsernamePasswordAuthenticationToken(usuario.getUsername(), usuario.getPassword()));
 			} catch (BadCredentialsException e) {
+				mensajerespuesta.setMensaje("usaurio y passwor incorrecto");
 				throw new Exception("Incorrect username or password", e);
+				
 			}
 			final UserDetails userDetails = usuarioService.loadUserByUsername(usuario.getUsername());
 			final String jwt = jwtTokenUtil.generateToken(userDetails);
 			usuario.setBearerToken(jwt);
+			mensajerespuesta.setStatus("OK");
+			mensajerespuesta.setEntidad(usuario);
+			mensajerespuesta.setMensaje("Se autentico con exito el usuario");
 		} catch (Exception e) {
 			log.error("Errer al loguear {} ", e.getMessage());
+			mensajerespuesta.setMensaje("Fallo al atenticarse");
 		}
-		return usuario;
+		return mensajerespuesta;
 
 	}
 }
