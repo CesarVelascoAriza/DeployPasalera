@@ -76,8 +76,13 @@ public class ServiceTransaccion {
 				clienteRepo.save(new Cliente(0, tipo, trans.getCliente().getDocumento(), trans.getCliente().getNombre(),
 						trans.getCliente().getEmail()));
 		}
-		if(cliente!= null)
+		if(cliente!= null) {
 			cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
+		}
+		else{
+			clienteRepo.save(new Cliente(0, tipo, trans.getCliente().getDocumento(), trans.getCliente().getNombre(),
+					trans.getCliente().getEmail()));
+		}
 		if(comercio != null) {
 			comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
 		}
