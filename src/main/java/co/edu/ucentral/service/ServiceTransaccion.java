@@ -90,7 +90,8 @@ public class ServiceTransaccion {
 			comercioRepo.save(new Comercio(0, trans.getComercio().getNit(), trans.getComercio().getNombreComercio(), "", ""));
 		}
 		comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
-		Transaccion transacciones = new Transaccion("", trans.getNumeroCuentaDestino(), trans.getDescripcionPago(),
+		
+		Transaccion transacciones = new Transaccion(trans.getNumeroCuentaorigen(), trans.getNumeroCuentaDestino(), trans.getDescripcionPago(),
 				trans.getMonto(), trans.getBanco(), cliente, comercio, estado);
 		if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
 			transacciones = transaccionRepo.save(transacciones);
