@@ -34,7 +34,7 @@ public class RestControllerAuth {
 	private Mensaje mensajerespuesta;
 	
 	@PostMapping
-	public Mensaje createAuthenticationToken(@RequestBody UsuarioDTO usuario) throws Exception {
+	public UsuarioDTO createAuthenticationToken(@RequestBody UsuarioDTO usuario) throws Exception {
 		try {
 			try {
 				authenticationManager.authenticate(
@@ -54,7 +54,7 @@ public class RestControllerAuth {
 			log.error("Errer al loguear {} ", e.getMessage());
 			mensajerespuesta.setMensaje("Fallo al atenticarse");
 		}
-		return mensajerespuesta;
+		return usuario;
 
 	}
 }
