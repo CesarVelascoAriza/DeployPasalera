@@ -3,6 +3,8 @@ package co.edu.ucentral.rest;
 import java.util.List;
 import java.util.Optional;
 
+import javax.xml.ws.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import co.edu.ucentral.DTO.BancoDTO;
 import co.edu.ucentral.model.Banco;
 import co.edu.ucentral.repository.IBanacoRepository;
 import co.edu.ucentral.service.ServiceBanco;
+import net.bytebuddy.asm.Advice.OffsetMapping.ForOrigin.Renderer.ForReturnTypeName;
 
 @RestController
 @RequestMapping(path = "/api/bancos")
@@ -45,10 +48,9 @@ public class ControllerRest {
 		return serviceBanco.getBancoNombre(nombre);
 	}
 	
-	@ResponseStatus(value = HttpStatus.CONTINUE)
 	@PostMapping()
-	public void agregarBanco(@RequestBody() Banco banco) {
-		bancoRepo.save(banco);
+	public Banco agregarBanco(@RequestBody() Banco banco) {
+		return bancoRepo.save(banco);
 		
 	}
 
