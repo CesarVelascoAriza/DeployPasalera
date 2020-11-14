@@ -36,9 +36,8 @@ public class Cliente implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cliente(int id, TipoDocumento tipodocumeto, String documento, String nombre, String email) {
-		super();
-		this.id = id;
+	public Cliente(TipoDocumento tipodocumeto, String documento, String nombre, String email) {
+		
 		this.tipodocumeto = tipodocumeto;
 		this.documento = documento;
 		this.nombre = nombre;

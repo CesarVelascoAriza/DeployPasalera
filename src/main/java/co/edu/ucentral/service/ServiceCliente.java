@@ -41,7 +41,7 @@ public class ServiceCliente {
 		try {
 			TipoDocumento tipo =tipoDocRepo.findByDescripcion(cliente.getTipoDocument());
 			clienteRepo.save(
-					new Cliente(0, tipo, cliente.getDocumento(), cliente.getNombre(),cliente.getEmail()));
+					new Cliente(tipo, cliente.getDocumento(), cliente.getNombre(),cliente.getEmail()));
 			cliente.setRespuesta("Se guardo el cliente");
 		} catch (Exception e) {
 			cliente.setRespuesta("Se genero un error al guardar el cliete"); 

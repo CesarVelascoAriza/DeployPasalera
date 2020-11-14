@@ -6,5 +6,5 @@ import co.edu.ucentral.model.Comercio;
 
 public interface IComercioRepository extends JpaRepository<Comercio, Integer> {
 	Comercio findByDocumento(int documento);
-		
+	boolean  existsByDocumento(int documento);	
 }

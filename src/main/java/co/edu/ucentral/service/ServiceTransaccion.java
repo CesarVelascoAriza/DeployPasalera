@@ -68,52 +68,43 @@ public class ServiceTransaccion {
 		TipoDocumento tipo = tipoDocumentoRep.findByDescripcion(trans.getCliente().getTipoDocument());
 		Cliente cliente = null;
 		Comercio comercio = null;
-		try {
-			cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
-			comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
-		} catch (Exception e) {
-			
-				clienteRepo.save(new Cliente(0, tipo, trans.getCliente().getDocumento(), trans.getCliente().getNombre(),
-						trans.getCliente().getEmail()));
-		}
-		if(cliente!= null) {
-			cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
-		}
-		else{
-			clienteRepo.save(new Cliente(0, tipo, trans.getCliente().getDocumento(), trans.getCliente().getNombre(),
+		if(!clienteRepo.existsByDocumento(trans.getCliente().getDocumento())) {
+			clienteRepo.save(new Cliente(tipo, trans.getCliente().getDocumento(), trans.getCliente().getNombre(),
 					trans.getCliente().getEmail()));
-		}
-		if(comercio != null) {
-			comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
-		}
-		else {
+			
+		}if(!comercioRepo.existsByDocumento(trans.getComercio().getNit())) {
 			comercioRepo.save(new Comercio(0, trans.getComercio().getNit(), trans.getComercio().getNombreComercio(), "", ""));
 		}
+		cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
 		comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
-		
 		Transaccion transacciones = new Transaccion(trans.getNumeroCuentaorigen(), trans.getNumeroCuentaDestino(), trans.getDescripcionPago(),
 				trans.getMonto(), trans.getBanco(), cliente, comercio, estado);
-		if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
-			transacciones = transaccionRepo.save(transacciones);
-		}
+		
+		 
+		transacciones = transaccionRepo.save(transacciones);
 		trans.setUrlRetorno("https://vistapasarela/transaccion/"+transacciones.getId());
 		trans.setCus(transacciones.getId());
+		
 		return trans;
 	}
 
-	public TransaccionesDTO actualizarTransaccion(TransaccionesDTO transacciones) {
+	public TransaccionesDTO actualizarTransaccion(TransaccionesDTO transacciones,int id) {
 
 		Estado estado = estadoRepo.findByDescripcion(transacciones.getEstado().getEstado());
 		TipoDocumento tipo = tipoDocumentoRep.findByDescripcion(transacciones.getCliente().getTipoDocument());
 		Cliente cliente = clienteRepo.findByDocumento(transacciones.getCliente().getDocumento());
 		Comercio comercio = comercioRepo.findByDocumento(transacciones.getComercio().getNit());
-		Transaccion transaccione = new Transaccion("", transacciones.getNumeroCuentaDestino(),
+		Optional<Object> transaccione = Optional.of(new Transaccion("", transacciones.getNumeroCuentaDestino(),
 				transacciones.getDescripcionPago(), transacciones.getMonto(), transacciones.getBanco(), cliente,
-				comercio, estado);
+				comercio, estado));
 		if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
-			transaccione = transaccionRepo.save(transaccione);
+			transaccione = transaccionRepo.findById(id).map(t ->{
+				t.setEstado(estado);
+				transaccionRepo.save(t);
+				return t;
+			});
 		}
-		transacciones.setCus(transaccione.getId());
+		
 		return transacciones;
 
 	}

@@ -56,8 +56,8 @@ public class ControllerRestTransaccion {
     			
     }
     @PutMapping("/{id}")
-    public TransaccionesDTO actualizarTransaccion(@RequestBody() TransaccionesDTO t, @RequestParam(value = "id") int id) {
-        return serviceTransaccion.actualizarTransaccion(t);
+    public TransaccionesDTO actualizarTransaccion(@RequestBody() TransaccionesDTO t, @PathVariable(value = "id") int id) {
+        return serviceTransaccion.actualizarTransaccion(t, id);
     }
 
     
