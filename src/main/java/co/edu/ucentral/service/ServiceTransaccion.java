@@ -82,7 +82,7 @@ public class ServiceTransaccion {
 		
 		 
 		transacciones = transaccionRepo.save(transacciones);
-		trans.setUrlRetorno("https://vistapasarela/transaccion/"+transacciones.getId());
+		trans.setUrlRetorno("https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/"+transacciones.getId());
 		trans.setCus(transacciones.getId());
 		
 		return trans;
@@ -91,19 +91,21 @@ public class ServiceTransaccion {
 	public TransaccionesDTO actualizarTransaccion(TransaccionesDTO transacciones,int id) {
 
 		Estado estado = estadoRepo.findByDescripcion(transacciones.getEstado().getEstado());
-		TipoDocumento tipo = tipoDocumentoRep.findByDescripcion(transacciones.getCliente().getTipoDocument());
-		Cliente cliente = clienteRepo.findByDocumento(transacciones.getCliente().getDocumento());
-		Comercio comercio = comercioRepo.findByDocumento(transacciones.getComercio().getNit());
+		//TipoDocumento tipo = tipoDocumentoRep.findByDescripcion(transacciones.getCliente().getTipoDocument());
+		Cliente cliente = new Cliente();
+		Comercio comercio = new Comercio();
+		//Cliente cliente = clienteRepo.findByDocumento(transacciones.getCliente().getDocumento());
+		//Comercio comercio = comercioRepo.findByDocumento(transacciones.getComercio().getNit());
 		Optional<Object> transaccione = Optional.of(new Transaccion("", transacciones.getNumeroCuentaDestino(),
 				transacciones.getDescripcionPago(), transacciones.getMonto(), transacciones.getBanco(), cliente,
 				comercio, estado));
-		if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
+		//if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
 			transaccione = transaccionRepo.findById(id).map(t ->{
 				t.setEstado(estado);
 				transaccionRepo.save(t);
 				return t;
 			});
-		}
+	//	}
 		
 		return transacciones;
 
