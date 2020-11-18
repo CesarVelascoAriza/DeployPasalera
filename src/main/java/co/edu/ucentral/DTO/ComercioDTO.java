@@ -3,24 +3,24 @@ package co.edu.ucentral.DTO;
 public class ComercioDTO {
 	
 	
-	private int nit;
+	private long nit;
 	private String nombreComercio;
 	
 	public ComercioDTO() {
 	
 	}
 
-	public ComercioDTO(int nit, String nombreComercio) {
+	public ComercioDTO(long nit, String nombreComercio) {
 		super();
 		this.nit = nit;
 		this.nombreComercio = nombreComercio;
 	}
 
-	public int getNit() {
+	public long getNit() {
 		return nit;
 	}
 
-	public void setNit(int nit) {
+	public void setNit(long nit) {
 		this.nit = nit;
 	}
 

@@ -102,6 +102,7 @@ public class ServiceTransaccion {
 		//if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
 			transaccione = transaccionRepo.findById(id).map(t ->{
 				t.setEstado(estado);
+				t.setNumeroCuentaOrigen(transacciones.getNumeroCuentaorigen());
 				transaccionRepo.save(t);
 				return t;
 			});

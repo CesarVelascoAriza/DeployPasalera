@@ -23,7 +23,7 @@ public class Comercio implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private int documento;
+	private long documento;
 	private String nombre;
 	private String direccion;
 	private String email;
@@ -32,7 +32,7 @@ public class Comercio implements Serializable {
 
 	}
 
-	public Comercio(Integer id, int documento, String nombre, String direccion, String email) {
+	public Comercio(Integer id, long documento, String nombre, String direccion, String email) {
 		super();
 		this.id = id;
 		this.documento = documento;
@@ -49,11 +49,11 @@ public class Comercio implements Serializable {
 		this.id = id;
 	}
 
-	public int getDocumento() {
+	public long getDocumento() {
 		return documento;
 	}
 
-	public void setDocumento(int documento) {
+	public void setDocumento(long documento) {
 		this.documento = documento;
 	}
 
