@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,7 @@ import co.edu.ucentral.repository.ITransaccionRepo;
 @Service
 public class ServiceTransaccion {
 
+	private static Logger logger = LoggerFactory.getLogger(ServiceTransaccion.class);
 	@Autowired
 	private ITransaccionRepo transaccionRepo;
 	@Autowired
@@ -55,9 +58,22 @@ public class ServiceTransaccion {
 			ClienteDTO cliente = new ClienteDTO(tran.getCliente().getTipodocumeto().getDescripcion(),
 					tran.getCliente().getDocumento(), tran.getCliente().getNombre(), tran.getCliente().getEmail(), "");
 			ComercioDTO comercio = new ComercioDTO(tran.getComercios().getDocumento(), tran.getComercios().getNombre());
-
-			transaccion.add(new TransaccionesDTO(tran.getId(), estado, cliente, tran.getNumeroCuentaDestino(), tran.getNumeroCuentaOrigen(),
-					tran.getBanco(), tran.getValorPago(), tran.getDescipcionPago(), comercio, ""));
+			transaccion.add(
+						new TransaccionesDTO(
+								tran.getId(),
+								estado,
+								cliente,
+								tran.getNumeroCuentaDestino(),
+								tran.getNumeroCuentaOrigen(),
+								"https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(tran.getId().toString()),
+								tran.getBanco(),
+								tran.getValorPago(),
+								tran.getDescipcionPago(),
+								comercio,"",
+								tran.getIdTxBanco(), tran.getIdFactura())
+					
+					);
+			
 		});
 
 		return transaccion;
@@ -89,26 +105,17 @@ public class ServiceTransaccion {
 	}
 
 	public TransaccionesDTO actualizarTransaccion(TransaccionesDTO transacciones,int id) {
-
-		Estado estado = estadoRepo.findByDescripcion(transacciones.getEstado().getEstado());
-		//TipoDocumento tipo = tipoDocumentoRep.findByDescripcion(transacciones.getCliente().getTipoDocument());
-		Cliente cliente = new Cliente();
-		Comercio comercio = new Comercio();
-		//Cliente cliente = clienteRepo.findByDocumento(transacciones.getCliente().getDocumento());
-		//Comercio comercio = comercioRepo.findByDocumento(transacciones.getComercio().getNit());
-		Optional<Object> transaccione = Optional.of(new Transaccion("", transacciones.getNumeroCuentaDestino(),
-				transacciones.getDescripcionPago(), transacciones.getMonto(), transacciones.getBanco(), cliente,
-				comercio, estado));
-		//if (cliente.getTipodocumeto().getDescripcion().equals(tipo.getDescripcion())) {
-			transaccione = transaccionRepo.findById(id).map(t ->{
-				t.setEstado(estado);
-				t.setNumeroCuentaOrigen(transacciones.getNumeroCuentaorigen());
-				transaccionRepo.save(t);
-				return t;
-			});
-	//	}
 		
-		return transacciones;
+		Estado estado = estadoRepo.findByDescripcion(transacciones.getEstado().getEstado());
+		Optional<Transaccion> transaccion = transaccionRepo.findById(id).map(temp->{
+			temp.setEstado(estado);
+			temp.setNumeroCuentaOrigen(transacciones.getNumeroCuentaorigen());
+			temp.setIdTxBanco(transacciones.getIdTxBanco());
+			transaccionRepo.save(temp);
+			return temp;
+		});
+		transacciones.setUrlRetorno("https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(transaccion.get().getId().toString()));
+		return getTransaccion(id);
 
 	}
 
@@ -121,9 +128,24 @@ public class ServiceTransaccion {
 		ComercioDTO comercio = new ComercioDTO(transaccion.get().getComercios().getDocumento(),
 				transaccion.get().getComercios().getNombre());
 
-		return new TransaccionesDTO(transaccion.get().getId(), estado, cliente,
-				transaccion.get().getNumeroCuentaDestino(),transaccion.get().getNumeroCuentaOrigen(), transaccion.get().getBanco(),
-				transaccion.get().getValorPago(), transaccion.get().getDescipcionPago(), comercio, "");
+		return new TransaccionesDTO(transaccion.get().getId(),estado,cliente,transaccion.get().getNumeroCuentaDestino(),
+				transaccion.get().getNumeroCuentaOrigen(),
+				"https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(transaccion.get().getId().toString()),
+				transaccion.get().getBanco(),transaccion.get().getValorPago(),transaccion.get().getDescipcionPago(),
+				comercio,"",transaccion.get().getIdTxBanco(),transaccion.get().getIdFactura()
+				);
+	}
+
+	public TransaccionesDTO actualizarIdBanco(TransaccionesDTO t, long id) {
+		Estado estado = estadoRepo.findByDescripcion(t.getEstado().getEstado());
+		Optional<Transaccion> txByIdBAnco = transaccionRepo.findByIdTxBanco(id).map(temp->{
+			temp.setEstado(estado);
+			temp.setNumeroCuentaOrigen(t.getNumeroCuentaorigen());
+			transaccionRepo.save(temp);
+			return temp;
+		});
+		t.setUrlRetorno("https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(txByIdBAnco.get().getId().toString()));
+		return t;
 	}
 
 }

@@ -13,25 +13,33 @@ public class TransaccionesDTO {
 	private String descripcionPago;
 	private ComercioDTO comercio;
 	private String validar;
+	private long idTxBanco;
+	private String idFactura;
 
 	public TransaccionesDTO() {
 
 	}
 
-	public TransaccionesDTO(int cus, EstadoDTO estado, ClienteDTO cliente, String numeroCuentaDestino,String numeroCuentaorigen, int banco,
-			double monto, String descripcionPago, ComercioDTO comercio, String validar) {
+	
+	public TransaccionesDTO(int cus, EstadoDTO estado, ClienteDTO cliente, String numeroCuentaDestino,
+			String numeroCuentaorigen, String urlRetorno, int banco, double monto, String descripcionPago,
+			ComercioDTO comercio, String validar, long idTxBanco, String idFactura) {
 		super();
 		this.cus = cus;
 		this.estado = estado;
 		this.cliente = cliente;
 		this.numeroCuentaDestino = numeroCuentaDestino;
-		this.numeroCuentaorigen =numeroCuentaorigen;
+		this.numeroCuentaorigen = numeroCuentaorigen;
+		this.urlRetorno = urlRetorno;
 		this.banco = banco;
 		this.monto = monto;
 		this.descripcionPago = descripcionPago;
 		this.comercio = comercio;
 		this.validar = validar;
+		this.idTxBanco = idTxBanco;
+		this.idFactura = idFactura;
 	}
+
 
 	public int getCus() {
 		return cus;
@@ -119,6 +127,22 @@ public class TransaccionesDTO {
 
 	public void setUrlRetorno(String urlRetorno) {
 		this.urlRetorno = urlRetorno;
+	}
+
+	public long getIdTxBanco() {
+		return idTxBanco;
+	}
+
+	public void setIdTxBanco(long idTxBanco) {
+		this.idTxBanco = idTxBanco;
+	}
+
+	public String getIdFactura() {
+		return idFactura;
+	}
+
+	public void setIdFactura(String idFactura) {
+		this.idFactura = idFactura;
 	}
 	
 

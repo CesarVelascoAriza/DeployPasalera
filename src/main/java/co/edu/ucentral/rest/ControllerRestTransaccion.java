@@ -59,7 +59,10 @@ public class ControllerRestTransaccion {
     public TransaccionesDTO actualizarTransaccion(@RequestBody() TransaccionesDTO t, @PathVariable(value = "id") int id) {
         return serviceTransaccion.actualizarTransaccion(t, id);
     }
-
+    @PutMapping("/idbanco/{id}")
+    public TransaccionesDTO actualizarIbanco(@RequestBody() TransaccionesDTO t, @PathVariable(value = "id") long id) {
+        return serviceTransaccion.actualizarIdBanco(t, id);
+    }
     
   
         
