@@ -99,7 +99,7 @@ public class ServiceTransaccion {
 		
 		 
 		transacciones = transaccionRepo.save(transacciones);
-		trans.setUrlRetorno("http://angularproject222.s3-website.us-east-2.amazonaws.com/"+transacciones.getId());
+		trans.setUrlRetorno("http://angularproject222.s3-website.us-east-2.amazonaws.com/");
 		trans.setCus(transacciones.getId());
 		
 		return trans;
@@ -115,7 +115,7 @@ public class ServiceTransaccion {
 			transaccionRepo.save(temp);
 			return temp;
 		});
-		transacciones.setUrlRetorno("http://angularproject222.s3-website.us-east-2.amazonaws.com/".concat(transaccion.get().getId().toString()));
+		transacciones.setUrlRetorno("http://angularproject222.s3-website.us-east-2.amazonaws.com/");
 		return getTransaccion(id);
 
 	}
