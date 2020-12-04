@@ -45,6 +45,10 @@ public class ControllerRestTransaccion {
     public TransaccionesDTO getTransaccion(@PathVariable(value = "id") int id) {
         return serviceTransaccion.getTransaccion(id);
     }
+    @GetMapping("/email/{email}")
+    public TransaccionesDTO getTransaccionByEmail(@PathVariable(value = "email") String email) {
+        return serviceTransaccion.getTransaccionByEmail(email);
+    }
 
     @PostMapping()
     public TransaccionesDTO agregarTransaccion(@RequestBody() TransaccionesDTO trans) {

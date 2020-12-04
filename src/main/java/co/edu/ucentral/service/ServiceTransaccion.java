@@ -8,6 +8,7 @@ package co.edu.ucentral.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -65,7 +66,7 @@ public class ServiceTransaccion {
 								cliente,
 								tran.getNumeroCuentaDestino(),
 								tran.getNumeroCuentaOrigen(),
-								"https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(tran.getId().toString()),
+								"http://angularproject222.s3-website.us-east-2.amazonaws.com/",
 								tran.getBanco(),
 								tran.getValorPago(),
 								tran.getDescipcionPago(),
@@ -98,7 +99,7 @@ public class ServiceTransaccion {
 		
 		 
 		transacciones = transaccionRepo.save(transacciones);
-		trans.setUrlRetorno("https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/"+transacciones.getId());
+		trans.setUrlRetorno("http://angularproject222.s3-website.us-east-2.amazonaws.com/"+transacciones.getId());
 		trans.setCus(transacciones.getId());
 		
 		return trans;
@@ -114,7 +115,7 @@ public class ServiceTransaccion {
 			transaccionRepo.save(temp);
 			return temp;
 		});
-		transacciones.setUrlRetorno("https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(transaccion.get().getId().toString()));
+		transacciones.setUrlRetorno("http://angularproject222.s3-website.us-east-2.amazonaws.com/".concat(transaccion.get().getId().toString()));
 		return getTransaccion(id);
 
 	}
@@ -130,7 +131,7 @@ public class ServiceTransaccion {
 
 		return new TransaccionesDTO(transaccion.get().getId(),estado,cliente,transaccion.get().getNumeroCuentaDestino(),
 				transaccion.get().getNumeroCuentaOrigen(),
-				"https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(transaccion.get().getId().toString()),
+				"http://angularproject222.s3-website.us-east-2.amazonaws.com/",
 				transaccion.get().getBanco(),transaccion.get().getValorPago(),transaccion.get().getDescipcionPago(),
 				comercio,"",transaccion.get().getIdTxBanco(),transaccion.get().getIdFactura()
 				);
@@ -144,8 +145,33 @@ public class ServiceTransaccion {
 			transaccionRepo.save(temp);
 			return temp;
 		});
-		t.setUrlRetorno("https://thankful-beach-0a7e34710.azurestaticapps.net/transaccion/".concat(txByIdBAnco.get().getId().toString()));
+		t.setUrlRetorno("http://angularproject222.s3-website.us-east-2.amazonaws.com/");
 		return t;
 	}
+	public TransaccionesDTO getTransaccionByEmail(String correo) {
+		Cliente cliente = clienteRepo.findByEmail(correo);
+		
+		ClienteDTO clienteDTO = new ClienteDTO(cliente.getTipodocumeto().getDescripcion(),
+				cliente.getDocumento(),
+				cliente.getNombre(),
+				cliente.getEmail(),
+				 "");
+		List<Transaccion> t = transaccionRepo.findByCliente(cliente);
+		OptionalInt td = t.stream().mapToInt(v-> v.getId()).max();
+		System.out.println(td.getAsInt());
+		Optional<Transaccion> transaccion = transaccionRepo.findById(td.getAsInt());
+		EstadoDTO estado = new EstadoDTO(transaccion.get().getEstado().getDescripcion());
+		
+		ComercioDTO comercio = new ComercioDTO(transaccion.get().getComercios().getDocumento(),
+				transaccion.get().getComercios().getNombre());
+
+		return new TransaccionesDTO(transaccion.get().getId(),estado,clienteDTO,transaccion.get().getNumeroCuentaDestino(),
+				transaccion.get().getNumeroCuentaOrigen(),
+				"http://angularproject222.s3-website.us-east-2.amazonaws.com/",
+				transaccion.get().getBanco(),transaccion.get().getValorPago(),transaccion.get().getDescipcionPago(),
+				comercio,"",transaccion.get().getIdTxBanco(),transaccion.get().getIdFactura()
+				);
+	}
+	
 
 }
