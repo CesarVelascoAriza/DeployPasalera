@@ -109,7 +109,6 @@ public class ServiceTransaccion {
 		
 		Estado estado = estadoRepo.findByDescripcion(transacciones.getEstado().getEstado());
 		Optional<Transaccion> transaccion = transaccionRepo.findById(id).map(temp->{
-			temp.setEstado(estado);
 			temp.setNumeroCuentaOrigen(transacciones.getNumeroCuentaorigen());
 			temp.setIdTxBanco(transacciones.getIdTxBanco());
 			transaccionRepo.save(temp);
