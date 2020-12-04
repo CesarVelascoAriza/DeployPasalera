@@ -32,7 +32,7 @@ public class Transaccion implements Serializable {
 	private double valorPago;
 	private int banco;
 	private long idTxBanco;
-	private String idFactura;
+	private int idFactura;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecharegistro;
 	@JoinColumn(name = "cliente", referencedColumnName = "id")
@@ -131,10 +131,10 @@ public class Transaccion implements Serializable {
 	public void setBanco(int banco) {
 		this.banco = banco;
 	}
-	public String getIdFactura() {
+	public int getIdFactura() {
 		return idFactura;
 	}
-	public void setIdFactura(String idFactura) {
+	public void setIdFactura(int idFactura) {
 		this.idFactura = idFactura;
 	}
 

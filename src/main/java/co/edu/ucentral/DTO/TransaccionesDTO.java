@@ -14,7 +14,7 @@ public class TransaccionesDTO {
 	private ComercioDTO comercio;
 	private String validar;
 	private long idTxBanco;
-	private String idFactura;
+	private int idFactura;
 
 	public TransaccionesDTO() {
 
@@ -23,7 +23,7 @@ public class TransaccionesDTO {
 	
 	public TransaccionesDTO(int cus, EstadoDTO estado, ClienteDTO cliente, String numeroCuentaDestino,
 			String numeroCuentaorigen, String urlRetorno, int banco, double monto, String descripcionPago,
-			ComercioDTO comercio, String validar, long idTxBanco, String idFactura) {
+			ComercioDTO comercio, String validar, long idTxBanco, int idFactura) {
 		super();
 		this.cus = cus;
 		this.estado = estado;
@@ -137,11 +137,11 @@ public class TransaccionesDTO {
 		this.idTxBanco = idTxBanco;
 	}
 
-	public String getIdFactura() {
+	public int getIdFactura() {
 		return idFactura;
 	}
 
-	public void setIdFactura(String idFactura) {
+	public void setIdFactura(int idFactura) {
 		this.idFactura = idFactura;
 	}
 	
