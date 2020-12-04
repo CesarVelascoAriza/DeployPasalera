@@ -49,7 +49,7 @@ public class Transaccion implements Serializable {
 		
 	}
 	public Transaccion(String numeroCuentaOrigen, String numeroCuentaDestino, String descipcionPago, double valorPago,
-			int banco, Cliente cliente, Comercio comercios, Estado estado) {
+			int banco, Cliente cliente, Comercio comercios, Estado estado,long idtxbanco,int idfactura) {
 		super();
 		this.numeroCuentaOrigen = numeroCuentaOrigen;
 		this.numeroCuentaDestino = numeroCuentaDestino;
@@ -60,6 +60,8 @@ public class Transaccion implements Serializable {
 		this.cliente = cliente;
 		this.comercios = comercios;
 		this.estado = estado;
+		this.idTxBanco =idtxbanco;
+		this.idFactura = idfactura;
 	}
 	public Integer getId() {
 		return id;

@@ -94,8 +94,16 @@ public class ServiceTransaccion {
 		}
 		cliente = clienteRepo.findByDocumento(trans.getCliente().getDocumento());
 		comercio = comercioRepo.findByDocumento(trans.getComercio().getNit());
-		Transaccion transacciones = new Transaccion(trans.getNumeroCuentaorigen(), trans.getNumeroCuentaDestino(), trans.getDescripcionPago(),
-				trans.getMonto(), trans.getBanco(), cliente, comercio, estado);
+		Transaccion transacciones = new Transaccion(
+				trans.getNumeroCuentaorigen()
+				, trans.getNumeroCuentaDestino()
+				, trans.getDescripcionPago(),
+				trans.getMonto(),
+				trans.getBanco(),
+				cliente, comercio,
+				estado,
+				trans.getIdTxBanco(),
+				trans.getIdFactura());
 		
 		 
 		transacciones = transaccionRepo.save(transacciones);
